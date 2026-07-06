@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Я люблю тебя ❤️</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+  :root {
+    --rose:    #e8526a;
+    --blush:   #f9c0cb;
+    --deep:    #2b1a22;
+    --soft:    #fdf0f3;
+    --cream:   #fff7f9;
+    --accent:  #c0395a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--soft);
+    color: var(--deep);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    padding: 48px 20px 28px;
+    background: linear-gradient(160deg, #fce4ec 0%, #f8bbd0 60%, #f48fb1 100%);
+    border-bottom: 3px solid var(--blush);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: "❤ ♥ ❤ ♥ ❤ ♥ ❤ ♥ ❤ ♥ ❤ ♥ ❤ ♥ ❤";
+    position: absolute; top: 8px; left: 0; right: 0;
+    font-size: 13px; color: rgba(200,50,80,.25);
+    letter-spacing: 6px; white-space: nowrap; overflow: hidden;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-shadow: 0 2px 18px rgba(232,82,106,.25);
+  }
+  header h1 span { color: var(--rose); }
+
+  /* ── GRID ── */
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 16px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--cream);
+    border-radius: 20px;
+    border: 2px solid #f5c6d0;
+    box-shadow: 0 4px 24px rgba(200,50,80,.08);
+    overflow: hidden;
+    transition: box-shadow .2s;
+  }
+  .card:hover { box-shadow: 0 8px 36px rgba(200,50,80,.15); }
+
+  .card-btn {
+    width: 100%;
+    padding: 22px 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: background .15s;
+  }
+  .card-btn:hover { background: #fce4ec55; }
+  .card-btn .icon { font-size: 1.5rem; flex-shrink: 0; }
+  .card-btn .arrow {
+    margin-left: auto;
+    font-size: 1rem;
+    transition: transform .3s;
+    color: var(--blush);
+  }
+  .card-btn.open .arrow { transform: rotate(180deg); }
+
+  .card-content {
+    display: none;
+    padding: 20px 28px 28px;
+    border-top: 2px dashed #f5c6d0;
+    animation: fadeSlide .3s ease;
+  }
+  .card-content.visible { display: block; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── DINNER ── */
+  #dinner-result {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--accent);
+    text-align: center;
+    padding: 10px 0 4px;
+  }
+  .dinner-sub {
+    text-align: center;
+    font-size: .95rem;
+    color: #c06080;
+    margin-top: 4px;
+  }
+
+  /* ── SHOP ── */
+  .shop-msg {
+    font-size: 1.1rem;
+    color: var(--accent);
+    font-weight: 700;
+    text-align: center;
+  }
+  .shop-links {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 14px;
+  }
+  .shop-links a {
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 800;
+    text-decoration: none;
+    font-size: .95rem;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .shop-links a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+  .vk  { background: #4c75a3; color: #fff; }
+  .tg  { background: #2AABEE; color: #fff; }
+
+  /* ── PHOTO ── */
+  #photo-wrap {
+    text-align: center;
+  }
+  #photo-wrap img {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 16px;
+    border: 3px solid var(--blush);
+    box-shadow: 0 6px 24px rgba(200,50,80,.18);
+    object-fit: cover;
+  }
+  .photo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    color: #c06080;
+    font-size: 1rem;
+  }
+  .photo-placeholder span { font-size: 3rem; }
+
+  /* ── SPEEDO ── */
+  .speedo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+  }
+  .speedo-svg { overflow: visible; }
+
+  .speedo-label {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .speedo-sub {
+    font-size: .9rem;
+    color: #c06080;
+    text-align: center;
+  }
+
+  /* ── QUIZ ── */
+  .quiz-q {
+    margin-bottom: 20px;
+  }
+  .quiz-q p {
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-size: 1rem;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .quiz-opt {
+    padding: 11px 16px;
+    border-radius: 12px;
+    border: 2px solid #f5c6d0;
+    background: #fff5f7;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: .97rem;
+    font-weight: 600;
+    color: var(--deep);
+    text-align: left;
+    transition: border-color .15s, background .15s;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--rose); background: #ffe8ee; }
+  .quiz-opt.correct  { border-color: #4caf50; background: #e8f5e9; color: #2e7d32; }
+  .quiz-opt.wrong    { border-color: #e53935; background: #ffebee; color: #c62828; }
+  .quiz-opt:disabled { cursor: default; }
+
+  .quiz-result {
+    text-align: center;
+    margin-top: 10px;
+  }
+  .quiz-result .score {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .quiz-result .pct {
+    font-size: 1.1rem;
+    color: #c06080;
+    margin-top: 4px;
+  }
+  .quiz-result .msg {
+    font-size: 1rem;
+    margin-top: 10px;
+    font-weight: 700;
+    color: var(--deep);
+  }
+  .quiz-restart {
+    margin-top: 18px;
+    padding: 12px 30px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(135deg, var(--rose), var(--accent));
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .quiz-restart:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(200,50,80,.3); }
+
+  /* ── HEARTS FLOAT ── */
+  .hearts-bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: -1; overflow: hidden;
+  }
+  .h {
+    position: absolute;
+    bottom: -40px;
+    animation: floatUp linear infinite;
+    font-size: 1.2rem;
+    opacity: .35;
+  }
+  @keyframes floatUp {
+    to { transform: translateY(-110vh) rotate(25deg); opacity: 0; }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 18px;
+    font-size: .85rem;
+    color: #d08090;
+  }
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<header>
+  <h1>Я люблю тебя <span>❤️♥️❤️</span></h1>
+</header>
+
+<main>
+
+  <!-- 1. УЖИН -->
+  <div class="card">
+    <button class="card-btn" onclick="toggleCard(this, 'dinner')">
+      <span class="icon">🍽️</span>
+      Тыкни сюда, чтобы узнать, что приготовить на ужин
+      <span class="arrow">▼</span>
+    </button>
+    <div class="card-content" id="dinner">
+      <div id="dinner-result">🌽 Хочу сегодня кукурузу!</div>
+      <div class="dinner-sub">Люблю тебя ❤️</div>
+    </div>
+  </div>
+
+  <!-- 2. КУПИТЬ -->
+  <div class="card">
+    <button class="card-btn" onclick="toggleCard(this, 'shop')">
+      <span class="icon">🛍️</span>
+      Тыкни сюда, если нужно мне что-нибудь купить домой
+      <span class="arrow">▼</span>
+    </button>
+    <div class="card-content" id="shop">
+      <div class="shop-msg">Нее, лучше напиши в ВК или телеге 😄</div>
+      <div class="shop-links">
+        <a class="vk"  href="https://vk.com"       target="_blank">ВКонтакте</a>
+        <a class="tg"  href="https://t.me"          target="_blank">Telegram</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ФОТО -->
+  <div class="card">
+    <button class="card-btn" onclick="toggleCard(this, 'photo')">
+      <span class="icon">📸</span>
+      Тыкни сюда, чтобы увидеть меня
+      <span class="arrow">▼</span>
+    </button>
+    <div class="card-content" id="photo">
+      <div id="photo-wrap">
+        <!-- ЗАМЕНИ photo.jpg на имя своего файла с фото -->
+        <img src="photo.jpg" alt="Моё фото" onerror="this.style.display='none'; document.getElementById('photo-ph').style.display='flex';">
+        <div class="photo-placeholder" id="photo-ph" style="display:none">
+          <span>🤳</span>
+          <div>Положи своё фото рядом с index.html<br>и назови его <strong>photo.jpg</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. СПИДОМЕТР ЛЮБВИ -->
+  <div class="card">
+    <button class="card-btn" onclick="toggleCard(this, 'speedo'); startSpeedo()">
+      <span class="icon">💖</span>
+      Тыкни сюда, чтобы узнать, насколько сильно я тебя люблю
+      <span class="arrow">▼</span>
+    </button>
+    <div class="card-content" id="speedo">
+      <div class="speedo-wrap">
+        <svg class="speedo-svg" width="260" height="160" viewBox="0 0 260 160">
+          <defs>
+            <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#f9c0cb"/>
+              <stop offset="50%"  stop-color="#e8526a"/>
+              <stop offset="100%" stop-color="#c0395a"/>
+            </linearGradient>
+          </defs>
+          <!-- bg arc -->
+          <path d="M 20 140 A 110 110 0 0 1 240 140" fill="none" stroke="#f5c6d0" stroke-width="22" stroke-linecap="round"/>
+          <!-- colored arc -->
+          <path id="loveArc" d="M 20 140 A 110 110 0 0 1 240 140" fill="none" stroke="url(#arcGrad)" stroke-width="22" stroke-linecap="round"
+                stroke-dasharray="0 346" style="transition:stroke-dasharray 1.4s cubic-bezier(.4,0,.2,1)"/>
+          <!-- needle -->
+          <line id="needle" x1="130" y1="140" x2="130" y2="38"
+                stroke="#c0395a" stroke-width="4" stroke-linecap="round"
+                style="transform-origin:130px 140px; transform:rotate(-90deg); transition:transform 1.4s cubic-bezier(.4,0,.2,1)"/>
+          <circle cx="130" cy="140" r="8" fill="#c0395a"/>
+          <!-- labels -->
+          <text x="22"  y="158" fill="#d08090" font-size="11" font-family="Nunito">0</text>
+          <text x="126" y="24"  fill="#d08090" font-size="11" font-family="Nunito">♾️</text>
+          <text x="228" y="158" fill="#d08090" font-size="11" font-family="Nunito">∞</text>
+        </svg>
+        <div class="speedo-label" id="speedoLabel">💗 Измеряю...</div>
+        <div class="speedo-sub">Загрузка чувств...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ТЕСТ -->
+  <div class="card">
+    <button class="card-btn" onclick="toggleCard(this, 'quiz'); initQuiz()">
+      <span class="icon">🧠</span>
+      Нажми сюда, чтобы пройти тест на знание меня
+      <span class="arrow">▼</span>
+    </button>
+    <div class="card-content" id="quiz">
+      <div id="quiz-body"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>сделано с любовью ❤️</footer>
+
+<script>
+/* ── HEARTS ── */
+(function(){
+  const bg = document.getElementById('heartsBg');
+  const hearts = ['❤️','🩷','💕','💖','💗','💓'];
+  for(let i=0;i<18;i++){
+    const h = document.createElement('div');
+    h.className='h';
+    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+    h.style.left = Math.random()*100+'vw';
+    h.style.animationDuration = (8+Math.random()*14)+'s';
+    h.style.animationDelay = (Math.random()*12)+'s';
+    h.style.fontSize = (.9+Math.random()*.8)+'rem';
+    bg.appendChild(h);
+  }
+})();
+
+/* ── TOGGLE ── */
+function toggleCard(btn, id){
+  const content = document.getElementById(id);
+  const isOpen = content.classList.contains('visible');
+  content.classList.toggle('visible', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
+
+/* ── SPEEDO ── */
+let speedoDone = false;
+function startSpeedo(){
+  if(speedoDone) return;
+  speedoDone = true;
+  setTimeout(()=>{
+    const arc = document.getElementById('loveArc');
+    const needle = document.getElementById('needle');
+    const label = document.getElementById('speedoLabel');
+    const sub = document.querySelector('.speedo-sub');
+    // full arc = 346
+    arc.style.strokeDasharray = '346 0';
+    needle.style.transform = 'rotate(90deg)';
+    label.textContent = '💞 БЕСКОНЕЧНО!';
+    sub.textContent = 'Шкала переполнена ❤️ Моя любовь не помещается';
+  }, 400);
+}
+
+/* ── QUIZ ── */
+const QUESTIONS = [
+  { q:"Мой любимый цвет",
+    opts:["Чёрный","Красный","Пурпурный","Белый"], correct:1 },
+  { q:"Число моего рождения",
+    opts:["14","13","12","11"], correct:2 },
+  { q:"Сколько раз я отжался максимум за подход?",
+    opts:["25","50","75","100","125","150"], correct:3 },
+  { q:"Какой максимальный уровень у танка?",
+    opts:["99","100","10","3"], correct:2 },
+  { q:"Мой самый любимый сериал",
+    opts:["Извне","Смерч","Менталист","Чёрное зеркало"], correct:2 },
+  { q:"Какой чай мне нравится?",
+    opts:["Шап Туэр","Коно","Габа","Лобо Гаи"], correct:2 },
+  { q:"Какая модель моего телефона?",
+    opts:["Noco p6 pro","Poco f6 pro","Poko f6 pro","Pogo f6 pro"], correct:1 },
+  { q:"Как зовут одного из моих братьев?",
+    opts:["Лендже","Стрендже","Джек","Дрендже"], correct:2 },
+  { q:"Сколько нам дней?",
+    opts:["1504","1885","2679","1753"], correct:1 },
+  { q:'Закончи строчку моей песни "эта тень наш..."',
+    opts:["клинический друг","пожизненный плен","ответ на солнце","забытый вишлист"], correct:1 },
+];
+
+let answers = [];
+let quizDone = false;
+
+function initQuiz(){
+  if(document.getElementById('quiz-body').innerHTML !== '') return;
+  renderQuiz();
+}
+
+function renderQuiz(){
+  answers = new Array(QUESTIONS.length).fill(null);
+  quizDone = false;
+  const body = document.getElementById('quiz-body');
+  body.innerHTML = QUESTIONS.map((q,qi)=>`
+    <div class="quiz-q" id="qq${qi}">
+      <p>Вопрос ${qi+1}: ${q.q}</p>
+      <div class="quiz-options">
+        ${q.opts.map((o,oi)=>`
+          <button class="quiz-opt" onclick="pickOpt(${qi},${oi})" id="opt${qi}_${oi}">${o}</button>
+        `).join('')}
+      </div>
+    </div>
+  `).join('') + `<div class="quiz-result" id="quiz-result" style="display:none"></div>`;
+}
+
+function pickOpt(qi, oi){
+  if(answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = QUESTIONS[qi];
+  const btns = document.querySelectorAll(`#qq${qi} .quiz-opt`);
+  btns.forEach((b,i)=>{
+    b.disabled = true;
+    if(i === q.correct) b.classList.add('correct');
+    else if(i === oi)   b.classList.add('wrong');
+  });
+  if(answers.every(a=>a!==null)) showResult();
+}
+
+function showResult(){
+  const score = answers.filter((a,i)=>a===QUESTIONS[i].correct).length;
+  const pct   = score * 10;
+  let msg = '';
+  if(pct===100) msg='🏆 Ты знаешь меня лучше всех на свете!';
+  else if(pct>=70) msg='💖 Ты хорошо меня знаешь, я горжусь тобой!';
+  else if(pct>=40) msg='😊 Неплохо! Но есть куда расти 😄';
+  else             msg='😅 Надо чаще разговаривать!';
+
+  const res = document.getElementById('quiz-result');
+  res.style.display='block';
+  res.innerHTML=`
+    <div class="score">${score} из 10</div>
+    <div class="pct">Ты знаешь меня на ${pct}%</div>
+    <div class="msg">${msg}</div>
+    <button class="quiz-restart" onclick="renderQuiz()">Пройти снова</button>
+  `;
+  res.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+</body>
+</html>
